@@ -73,7 +73,7 @@ h3 {
 }
 
 #sidebar.collapsed {
-    transform: translateX(-158px);
+    transform: translateX(-140px);
 }
 
 #sidebarToggle {
@@ -882,66 +882,81 @@ h2::after { bottom: 0; }
         </div>
 
         <!-- Help Modal -->
-        <!-- Help Modal -->
-<div id="helpModal" class="modal">
-    <div class="help-modal-content">
-        <h2>How to Use VideoFrames: Tag & Extract</h2>
-        
-        <h3>Getting Started</h3>
-        <ol>
-            <li><strong>Upload a Video:</strong> Click <button class="help-button-video">Upload Video</button> button in the sidebar to select and upload your video.</li>
-            <li><strong>Navigate the Video:</strong> Use the timeline below the video player to navigate through your video. You can click anywhere on the timeline or drag the scrubber for precise navigation.</li>
-            <li><strong>Toggle Sidebar:</strong> Click <button class="help-button-sidebar">☰</button> button to collapse or expand the sidebar for a better view of the video.</li>
-        </ol>
+        <div id="helpModal" class="modal">
+            <div class="help-modal-content">
+                <h2>How to Use VideoFrames: Tag & Extract</h2>
+                
+                <h3>Getting Started</h3>
+                <ol>
+                    <li><strong>Upload a Video:</strong> Click <button class="help-button-video">Upload Video</button> button in the sidebar to select and upload your video.</li>
+                    <li><strong>Navigate the Video:</strong> Use the timeline below the video player to navigate through your video. You can click anywhere on the timeline or drag the scrubber for precise navigation.</li>
+                    <li><strong>Toggle Sidebar:</strong> Click <button class="help-button-sidebar">☰</button> button to collapse or expand the sidebar for a better view of the video.</li>
+                    <li><strong>Replace Video:</strong> To replace the current video, click the <button class="help-button-video">Replace Video</button> button in the sidebar. This will allow you to select a new video file without losing your current tags and settings.</li>
+                </ol>
 
-        <h3>Frame Management</h3>
-        <ul>
-            <li><strong>Add/Remove Frame:</strong> Press the <span class="shortcut-key" data-shortcut="addFrame"></span> key or click the <button class="help-button-frame">Add/Remove Frame</button> button to mark frames for extraction. The (text) left of button is keyboard shortcut.</li>
-            <li><strong>Navigate Frames:</strong> Use the <span class="shortcut-key" data-shortcut="prevFrame"></span> and <span class="shortcut-key" data-shortcut="nextFrame"></span> keys to move between marked frames. You'll see visual indicators on the timeline for each marked frame.</li>
-            <li><strong>Frame Information:</strong> The frame info display above the video shows the current time and frame details, including any assigned tags.</li>
-        </ul>
+                <h3>Frame Management</h3>
+                <ul>
+                    <li><strong>Add/Remove Frame:</strong> Press the <span class="shortcut-key" data-shortcut="addFrame"></span> key or click the <button class="help-button-frame">Add/Remove Frame</button> button to mark frames for extraction. The (text) left of button is keyboard shortcut.</li>
+                    <li><strong>Navigate Frames:</strong> Use the <span class="shortcut-key" data-shortcut="prevFrame"></span> and <span class="shortcut-key" data-shortcut="nextFrame"></span> keys to move between marked frames. You'll see visual indicators on the timeline for each marked frame.</li>
+                    <li><strong>Frame Information:</strong> The frame info display above the video shows the current time and frame details, including any assigned tags.</li>
+                </ul>
 
-        <h3>Tagging System</h3>
-        <ul>
-            <li><strong>Manage Tags:</strong> Click<button class="help-button-tag">Tag Manager</button> button from the sidebar to create & delete tags.</li>
-            <li><strong>Assign Tags:</strong> Use the tag overlay below the video to assign or remove tags from the current frame. You can click on a tag or use number keys <span class="shortcut-key_blank">1-9</span> for the first 9 tags.</li>
-            <li><strong>View Tags:</strong> Assigned tags are displayed in the frame information and will be included in the extracted frame filenames.</li>
-        </ul>
+                <h3>Tagging System</h3>
+                <ul>
+                    <li><strong>Manage Tags:</strong> Click<button class="help-button-tag">Tag Manager</button> button from the sidebar to create & delete tags.</li>
+                    <li><strong>Assign Tags:</strong> Use the tag overlay below the video to assign or remove tags from the current frame. You can click on a tag or use number keys <span class="shortcut-key_blank">1-9</span> for the first 9 tags.</li>
+                    <li><strong>View Tags:</strong> Assigned tags are displayed in the frame information and will be included in the extracted frame filenames.</li>
+                </ul>
 
-        <h3>Keyboard Shortcuts</h3>
-        <ul>
-            <li><strong><span class="shortcut-key" data-shortcut="addFrame"></span>:</strong> Add/Remove current frame</li>
-            <li><strong><span class="shortcut-key" data-shortcut="prevFrame"></span>:</strong> Navigate to previous marked frame</li>
-            <li><strong><span class="shortcut-key" data-shortcut="nextFrame"></span>:</strong> Navigate to next marked frame</li>
-            <li><strong><span class="shortcut-key" data-shortcut="openTagManager"></span>:</strong> Open Tag Manager</li>
-            <li><strong><span class="shortcut-key_blank">1-9</span>:</strong> Quickly assign/remove tags (first 9 tags)</li>
-        </ul>
+                <h3>Keyboard Shortcuts</h3>
+                <ul>
+                    <li><strong><span class="shortcut-key" data-shortcut="addFrame"></span>:</strong> Add/Remove current frame</li>
+                    <li><strong><span class="shortcut-key" data-shortcut="prevFrame"></span>:</strong> Navigate to previous marked frame</li>
+                    <li><strong><span class="shortcut-key" data-shortcut="nextFrame"></span>:</strong> Navigate to next marked frame</li>
+                    <li><strong><span class="shortcut-key" data-shortcut="openTagManager"></span>:</strong> Open Tag Manager</li>
+                    <li><strong><span class="shortcut-key_blank">1-9</span>:</strong> Quickly assign/remove tags (first 9 tags)</li>
+                </ul>
 
-        <h3>Settings</h3>
-        <p>Click the <button class="help-button-gear"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button> icon in the bottom right to access settings:</p>
-        <ul>
-            <li><strong>Shortcuts:</strong> Customize keyboard shortcuts for various actions.</li>
-            <li><strong>Export Settings:</strong> Choose image format, quality, and file naming options for extracted frames.</li>
-        </ul>
+                <h3>Settings</h3>
+                <p>Click the <button class="help-button-gear"><svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg></button> icon in the bottom right to access settings:</p>
+                <ul>
+                    <li><strong>Shortcuts:</strong> Customize keyboard shortcuts for various actions.</li>
+                    <li><strong>Export Settings:</strong> Choose image format, quality, and file naming options for extracted frames.</li>
+                    <li><strong>Display Settings:</strong> Toggle the visibility of the shortcut overlay.</li>
+                </ul>
 
-        <h3>Extraction</h3>
-        <ol>
-            <li>Once you've selected and tagged frames, click the <button class="help-button-extract">Export Frames</button> button in the sidebar.</li>
-            <li>Confirm the extraction when prompted.</li>
-            <li>Wait for the extraction process to complete.</li>
-            <li>A ZIP file will be downloaded containing all extracted frames.</li>
-        </ol>
-        <p>Each frame will be saved as an image file with its assigned tags in the filename.</p>
+                <h3>Extraction</h3>
+                <ol>
+                    <li>Once you've selected and tagged frames, click the <button class="help-button-extract">Export Frames</button> button in the sidebar.</li>
+                    <li>Choose between two export options:
+                        <ul>
+                            <li><strong>Export Frames Only:</strong> This will export only the selected frames as image files.</li>
+                            <li><strong>Export Frames with Session Data:</strong> This will export the frames along with the session data, including the original video, tags, and settings. This option allows you to reload the session later.</li>
+                        </ul>
+                    </li>
+                    <li>Confirm the extraction when prompted.</li>
+                    <li>Wait for the extraction process to complete.</li>
+                    <li>A ZIP file will be downloaded containing the extracted frames and, if selected, the session data.</li>
+                </ol>
+                <p>Each frame will be saved as an image file with its assigned tags in the filename.</p>
 
-        <h3>Additional Tips</h3>
-        <ul>
-            <li>Hover over timeline indicators to preview frames without adding them.</li>
-            <li>The extract button is disabled until you've selected at least one frame.</li>
-            <li>You can reorder tags in the Tag Manager by dragging and dropping.</li>
-            <li>Use the settings to customize the application to your workflow.</li>
-        </ul>
-    </div>
-</div>
+                <h3>Loading a Session</h3>
+                <ol>
+                    <li>Click the <button class="help-button-sidebar">Load Session</button> button in the sidebar.</li>
+                    <li>Select a previously exported ZIP file containing session data.</li>
+                    <li>The application will load the video, frames, tags, and settings from the session file.</li>
+                </ol>
+
+                <h3>Additional Tips</h3>
+                <ul>
+                    <li>Hover over timeline indicators to preview frames without adding them.</li>
+                    <li>The extract button is disabled until you've selected at least one frame.</li>
+                    <li>You can reorder tags in the Tag Manager by dragging and dropping.</li>
+                    <li>Use the settings to customize the application to your workflow.</li>
+                    <li>The shortcut overlay can be toggled on/off in the settings menu.</li>
+                </ul>
+            </div>
+        </div>
 
         <div id="videoContainer">
             <!-- Add this new div for the placeholder -->
@@ -1459,12 +1474,69 @@ h2::after { bottom: 0; }
     function confirmExtraction() {
         const frameCount = selectedFrames.length;
 
-        if (confirm(`This will download ${frameCount} images as a ZIP file. Are you sure you want to proceed?`)) {
-            extractFrames();
-        }
+        const exportOptions = `
+            <p>Choose export option:</p>
+            <button id="exportFramesOnly" class="export-button">Export Frames Only</button>
+            <button id="exportFramesWithSession" class="export-button">Export Frames with Session Data</button>
+        `;
+
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.style.display = 'block';
+
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+        modalContent.innerHTML = `
+            <h3>Export ${frameCount} Frames</h3>
+            ${exportOptions}
+        `;
+
+        // Add styles for the export buttons
+        const style = document.createElement('style');
+        style.textContent = `
+            .export-button {
+                background-color: var(--secondary-color);
+                color: white;
+                border: 1px solid #ffffff26;
+                padding: 10px 20px;
+                margin: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+            #exportFramesWithSession {
+                background-color: var(--primary-color);
+            }
+            .export-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+        `;
+        document.head.appendChild(style);
+
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+
+        document.getElementById('exportFramesOnly').addEventListener('click', () => {
+            document.body.removeChild(modal);
+            extractFrames(false);
+        });
+
+        document.getElementById('exportFramesWithSession').addEventListener('click', () => {
+            document.body.removeChild(modal);
+            extractFrames(true);
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
     }
 
-    async function extractFrames() {
+    async function extractFrames(includeSessionData = true) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
@@ -1488,22 +1560,29 @@ h2::after { bottom: 0; }
                 loadingMessage.textContent = `Extracting frames: ${extractedFrames} / ${totalFrames}`;
             }
 
-            loadingMessage.textContent = 'Frames extracted. Processing video file...';
+            loadingMessage.textContent = 'Frames extracted. Processing...';
 
-            await addVideoAndSessionData(sessionFolder);
-
-            const readmeContent = createReadmeContent();
-            sessionFolder.file('README.txt', readmeContent);
+            if (includeSessionData) {
+                await addVideoAndSessionData(sessionFolder);
+                const readmeContent = createReadmeContent();
+                sessionFolder.file('README.txt', readmeContent);
+            }
 
             const loadingInterval = animateLoadingMessage('Preparing ZIP file', loadingMessage);
 
             const zipBlob = await zipInstance.generateAsync({ type: 'blob' });
             clearInterval(loadingInterval);
-            saveAs(zipBlob, `${settings.export.zipFileName}.zip`);
+            
+            // Modify the zip file name if only frames are exported
+            const zipFileName = includeSessionData 
+                ? `${settings.export.zipFileName}.zip`
+                : `${settings.export.zipFileName}_frames_only.zip`;
+            
+            saveAs(zipBlob, zipFileName);
 
             loadingMessage.textContent = 'Download ready.';
             elements.extractButton.disabled = false;
-            displayOutput(`${extractedFrames} frames extracted and zipped with video file & JSON data.`);
+            displayOutput(`${extractedFrames} frames extracted and zipped${includeSessionData ? ' with session data' : ''}.`);
         } catch (error) {
             console.error('Error during extraction:', error);
             displayError(`Error during extraction: ${error.message}`);
@@ -1574,12 +1653,11 @@ h2::after { bottom: 0; }
             throw new Error(`Failed to add video and session data: ${error.message}`);
         }
     }
-
     function getVideoExtension(videoBlob, originalName) {
         let extension = videoBlob.type.split('/')[1];
         if (extension === 'plain' || !extension) {
             const parts = originalName.split('.');
-            extension = parts.length > 1 ? parts.pop() : 'mkv';
+            extension = parts.length > 1 ? parts.pop().toLowerCase() : 'mkv';
         }
         return extension;
     }
@@ -2266,11 +2344,12 @@ Created on: ${new Date().toLocaleString()}
 
         const videoFile = await findVideoFile(zip, sessionData);
         if (!videoFile) {
-            throw new Error('Invalid session file. ZIP must contain the corresponding video file.');
+            throw new Error('Invalid session file. ZIP must contain a video file.');
         }
 
         const videoBlob = await videoFile.async('blob');
-        videoSrc = URL.createObjectURL(videoBlob);
+        const videoExtension = getVideoExtension(videoBlob, videoFile.name);
+        videoSrc = URL.createObjectURL(new Blob([videoBlob], { type: `video/${videoExtension}` }));
         elements.videoPlayer.src = videoSrc;
 
         await new Promise(resolve => {
@@ -2291,20 +2370,39 @@ Created on: ${new Date().toLocaleString()}
         updateFrameCounter();
         updateFrameInfo();
     }
-
     async function findVideoFile(zip, sessionData) {
-        const expectedVideoFilename = `video.${sessionData.videoType.split('/')[1]}`;
+        console.log('Finding video file in zip...');
         const sessionFolder = getSessionFolder(zip, 'session.json');
-        const videoPath = sessionFolder + expectedVideoFilename;
-        return zip.files[videoPath] || null;
-    }
+        console.log(`Session folder: ${sessionFolder}`);
 
-    function getSessionFolder(zip, sessionFilename) {
+        // Look for any video file in the session folder
         for (const filename in zip.files) {
-            if (filename.endsWith(sessionFilename)) {
-                return filename.substring(0, filename.lastIndexOf('/') + 1);
+            if (filename.startsWith(sessionFolder) && isVideoFile(filename)) {
+                console.log(`Video file found: ${filename}`);
+                return zip.files[filename];
             }
         }
+
+        console.log('Video file not found');
+        return null;
+    }
+
+    function isVideoFile(filename) {
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.wmv', '.flv', '.mkv'];
+    return videoExtensions.some(ext => filename.toLowerCase().endsWith(ext));
+}
+
+    function getSessionFolder(zip, sessionFilename) {
+        console.log(`Searching for session folder containing ${sessionFilename}...`);
+        for (const filename in zip.files) {
+            console.log(`Checking file: ${filename}`);
+            if (filename.endsWith(sessionFilename)) {
+                const folder = filename.substring(0, filename.lastIndexOf('/') + 1);
+                console.log(`Session folder found: ${folder}`);
+                return folder;
+            }
+        }
+        console.log('Session folder not found');
         return '';
     }
 
@@ -2335,3 +2433,4 @@ Created on: ${new Date().toLocaleString()}
 </script>
 </body>
 </html>
+
