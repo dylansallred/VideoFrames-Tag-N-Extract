@@ -9,7 +9,7 @@
 - **Custom Tagging**: Create, assign, and manage tags for selected frames.
 - **Keyboard Shortcuts**: Streamline your workflow with customizable keyboard shortcuts.
 - **Flexible Export Options**: Choose between PNG, JPEG, or WebP formats with adjustable quality settings.
-- **Session Management**: Save and load your work progress.
+- **Session Management**: Save and load your work progress, including video, frames, and tags.
 - **User-Friendly Interface**: Drag-and-drop video upload, collapsible sidebar, and helpful overlays.
 
 ## How to Use
@@ -29,7 +29,8 @@
    - Assign tags to frames using the tag overlay or number keys 1-9.
 
 5. **Extract Frames**:
-   - Click the "Extract Frames" button in the sidebar.
+   - Click the "Export Frames" button in the sidebar.
+   - Choose between exporting frames only or including session data.
    - Confirm the extraction when prompted.
    - Wait for the process to complete, and download the ZIP file containing extracted frames.
 
@@ -49,11 +50,17 @@ Access the settings menu by clicking the gear icon in the bottom right corner:
 - **Export Settings**: Choose image format, quality, and file naming options.
 - **Display Settings**: Toggle the shortcut overlay visibility.
 
+## Session Management
+
+- **Save Session**: When exporting frames, choose the option to include session data.
+- **Load Session**: Use the "Load Session" button to restore a previous work session.
+
 ## Tips
 
 - Hover over timeline indicators to preview frames without adding them.
 - Reorder tags in the Tag Manager by dragging and dropping.
 - Use the "Load Session" feature to continue work from a previous session.
+- The shortcut overlay can be toggled on/off in the settings menu.
 
 ## Technical Details
 
