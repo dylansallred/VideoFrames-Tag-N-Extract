@@ -1266,6 +1266,37 @@ h2::after { bottom: 0; }
 
     elements.sidebarVideoInput.addEventListener('change', handleVideoInputChange);
 
+    // Add this to the Event Listeners section
+    document.addEventListener('keydown', (event) => {
+        // Don't handle shortcuts if we're in an input field or modal
+        if (event.target.tagName === 'INPUT' || isModalOpen()) {
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            if (elements.tagManagerModal.style.display === 'block') {
+                closeTagManager();
+            }
+            if (elements.helpModal.style.display === 'block') {
+                elements.helpModal.style.display = 'none';
+            }
+        } else if (event.key === ' ' || event.key === 'Spacebar') {
+            event.preventDefault(); // Prevent page scrolling
+            if (elements.videoPlayer.src) {
+                if (elements.videoPlayer.paused) {
+                    elements.videoPlayer.play();
+                } else {
+                    elements.videoPlayer.pause();
+                }
+            }
+        } else if (isTagManagerOpen || isSettingsModalOpen) return;
+
+        const key = event.key.toLowerCase();
+        const shortcuts = settings.shortcuts;
+
+        // ... rest of your existing shortcut handling code ...
+    });
+
     // ---------------------------
     // Function Definitions
     // ---------------------------
@@ -1353,8 +1384,11 @@ h2::after { bottom: 0; }
     }
 
     function preventVideoPlay(event) {
-        event.preventDefault();
-        elements.videoPlayer.pause();
+        // Only prevent automatic playing, not user-initiated playing
+        if (!event.isTrusted) {
+            event.preventDefault();
+            elements.videoPlayer.pause();
+        }
     }
 
     // ---------------------------
@@ -1740,7 +1774,8 @@ Created on: ${new Date().toLocaleString()}
         const percentage = Math.min(Math.max(x / elements.timeline.offsetWidth, 0), 1);
         let newTime = percentage * elements.videoPlayer.duration;
 
-        const snapThreshold = 0.01 * elements.videoPlayer.duration; // 1% of video duration
+        // Reduce snap threshold from 1% to 0.25% of video duration
+        const snapThreshold = 0.0025 * elements.videoPlayer.duration;
         const nearestFrame = findNearestFrame(newTime, snapThreshold);
 
         if (nearestFrame !== null) {
@@ -2026,7 +2061,28 @@ Created on: ${new Date().toLocaleString()}
     // Keyboard Shortcut Functions
     // ---------------------------
     document.addEventListener('keydown', (event) => {
-        if (isTagManagerOpen || isSettingsModalOpen) return;
+        // Don't handle shortcuts if we're in an input field or modal
+        if (event.target.tagName === 'INPUT' || isModalOpen()) {
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            if (elements.tagManagerModal.style.display === 'block') {
+                closeTagManager();
+            }
+            if (elements.helpModal.style.display === 'block') {
+                elements.helpModal.style.display = 'none';
+            }
+        } else if (event.key === ' ' || event.key === 'Spacebar') {
+            event.preventDefault(); // Prevent page scrolling
+            if (elements.videoPlayer.src) {
+                if (elements.videoPlayer.paused) {
+                    elements.videoPlayer.play();
+                } else {
+                    elements.videoPlayer.pause();
+                }
+            }
+        } else if (isTagManagerOpen || isSettingsModalOpen) return;
 
         const key = event.key.toLowerCase();
         const shortcuts = settings.shortcuts;
@@ -2143,12 +2199,26 @@ Created on: ${new Date().toLocaleString()}
     }
 
     function handleGlobalKeyDown(event) {
+        // Don't handle shortcuts if we're in an input field or modal
+        if (event.target.tagName === 'INPUT' || isModalOpen()) {
+            return;
+        }
+
         if (event.key === 'Escape') {
             if (elements.tagManagerModal.style.display === 'block') {
                 closeTagManager();
             }
             if (elements.helpModal.style.display === 'block') {
                 elements.helpModal.style.display = 'none';
+            }
+        } else if (event.key === ' ' || event.key === 'Spacebar') {
+            event.preventDefault(); // Prevent page scrolling
+            if (elements.videoPlayer.src) {
+                if (elements.videoPlayer.paused) {
+                    elements.videoPlayer.play();
+                } else {
+                    elements.videoPlayer.pause();
+                }
             }
         }
     }
