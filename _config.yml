@@ -1,0 +1,11 @@
+# Site settings
+title: VideoFrames Tag & Extract
+description: A modern, browser-based tool for Extracting Frames from Videos
+url: https://dylansallred.github.io
+
+# Theme settings
+theme: jekyll-theme-minimal
+google_analytics: # Add your Google Analytics ID here if needed
+
+# Build settings
+markdown: kramdown 
