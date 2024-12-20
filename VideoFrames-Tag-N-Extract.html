@@ -1988,6 +1988,10 @@ Created on: ${new Date().toLocaleString()}
     function openTagManager() {
         elements.tagManagerModal.style.display = 'block';
         isTagManagerOpen = true;
+        
+        // Add keydown event listener when opening
+        document.addEventListener('keydown', handleTagManagerKeydown);
+        
         setTimeout(() => {
             elements.newTagInput.focus();
             elements.newTagInput.value = '';
@@ -1997,6 +2001,9 @@ Created on: ${new Date().toLocaleString()}
     function closeTagManager() {
         elements.tagManagerModal.style.display = 'none';
         isTagManagerOpen = false;
+        
+        // Remove keydown event listener when closing
+        document.removeEventListener('keydown', handleTagManagerKeydown);
     }
 
     function handleNewTagInputKeyPress(event) {
@@ -2017,10 +2024,13 @@ Created on: ${new Date().toLocaleString()}
 
     function renderTags() {
         elements.tagList.innerHTML = '';
-        tags.forEach(tag => {
+        tags.forEach((tag, index) => {
             const tagElem = document.createElement('span');
             tagElem.className = 'tag-item';
-            tagElem.innerHTML = `${tag} <span class="delete-tag">&times;</span>`;
+            
+            // Add shortcut number if tag is within first 9 tags
+            const shortcutText = index < 9 ? ` (${index + 1})` : '';
+            tagElem.innerHTML = `${tag}${shortcutText} <span class="delete-tag">&times;</span>`;
             tagElem.dataset.tag = tag;
 
             const deleteButton = tagElem.querySelector('.delete-tag');
@@ -2496,6 +2506,13 @@ Created on: ${new Date().toLocaleString()}
     function hideLoadingIndicator() {
         elements.loadingIndicator.style.display = 'none';
         elements.loadingIndicator.innerHTML = '';
+    }
+
+    // Add this to the Tag Management Functions section
+    function handleTagManagerKeydown(event) {
+        if (event.key === 'Escape') {
+            closeTagManager();
+        }
     }
 
 })();
