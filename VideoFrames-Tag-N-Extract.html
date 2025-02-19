@@ -23,6 +23,14 @@
     --timeline-indicator: #3498db;
     --timeline-indicator-hover: #acdeff;
     --timeline-indicator-active: #ff0000;
+    --crop-handle-size: 10px;
+    --crop-handle-color: #3498db;
+    --crop-overlay-color: rgba(0, 0, 0, 0.5);
+    --modal-bg: #1d1c1c;
+    --modal-border: #3a3a3a;
+    --input-bg: #2a2a2a;
+    --input-border: #3a3a3a;
+    --input-focus: #226b9c;
 }
 
 /* Global Styles */
@@ -141,13 +149,11 @@ h3 {
 /* Main Content Styles */
 #mainContent {
     margin-left: 140px;
-    padding: 10px 20px;
     width: calc(100% - 250px);
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
-    overflow-y: hidden;
     height: 100vh;
     box-sizing: border-box;
 }
@@ -165,12 +171,22 @@ h3 {
     width: 100%;
     max-width: 1200px;
     position: relative;
+    margin: 0 auto;
+}
+
+.video-wrapper {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #videoPlayer {
-    width: 100%;
+    display: block;
+    max-width: 100%;
     height: auto;
-    max-height: 80vh;
     object-fit: contain;
 }
 
@@ -299,20 +315,163 @@ button:disabled {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: rgba(0,0,0,0.4);
     backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background-color: var(--bg-color);
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid var(--disabled-color);
-    width: 300px;
+    background-color: var(--modal-bg);
+    margin: 100px auto;
+    padding: 25px;
+    border: 1px solid var(--modal-border);
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     position: relative;
+    box-sizing: border-box;
+}
+
+.export-modal-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.export-modal-header h3 {
+    font-size: 24px;
+    margin: 0;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.export-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid var(--input-border);
+    box-sizing: border-box;
+}
+
+.export-section label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.export-section input {
+    width: 100%;
+    padding: 10px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.export-section input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.3);
+}
+
+.dimensions-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.dimensions-box {
+    flex: 1;
+    padding: 8px;
+    text-align: center;
+}
+
+.dimensions-box p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.dimensions-box .dim-label {
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.dimensions-box .dim-label-new {
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.dimensions-box .dim-value {
+    color: var(--text-color);
+    font-family: monospace;
+    font-size: 16px;
+}
+
+.scale-factor-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.scale-factor-container input {
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.scale-factor-container label {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.scale-factor-container span {
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 14px;
+}
+
+.export-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.export-button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#exportFramesOnly {
+    background-color: var(--secondary-color);
+}
+
+#exportFramesWithSession {
+    background-color: var(--primary-color);
+}
+
+.export-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Tag Manager Styles */
@@ -344,52 +503,140 @@ button:disabled {
 }
 
 .tag-item {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     background-color: var(--secondary-color);
     color: white;
-    padding: 5px 10px;
+    padding: 5px 12px;
     border-radius: 15px;
-    margin: 5px 5px 0 0;
+    margin: 5px 15px 5px 0;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     font-size: 12px;
+    position: relative;
+    min-height: 24px;
 }
 
 .tag-item:hover {
+    z-index: 20;
     background-color: var(--secondary-hover-color);
+    box-shadow: 0px 0px 0px 1px #39ff00, 0px 0px 4px 1px #39ff00;
+}
+
+.tag-item:hover .tag-reorder {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    margin-left: -10px;
+}
+
+.tag-reorder {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.8);
+    opacity: 0;
+    transition: all 0.2s ease;
+    padding: 2px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+}
+
+.tag-reorder button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    min-height: 20px;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.tag-reorder button:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tag-reorder.left {
+    right: calc(100% + 4px);
+    margin-right: 0;
+    padding-right: 4px;
+}
+
+.tag-reorder.right {
+    left: calc(100% + 4px);
+    margin-left: 0;
+    padding-left: 4px;
 }
 
 .delete-tag {
-    margin-left: 5px;
+    margin-left: 8px;
     font-weight: bold;
     cursor: pointer;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    opacity: 0;
+    width: 12px;
+    height: 12px;
+}
+
+.tag-item:hover .delete-tag {
+    opacity: 1;
 }
 
 .delete-tag:hover {
-    color: var(--primary-color);
+    color: var(--fourth-hover-color);
+    transform: scale(1.2);
+    text-shadow: 0 0 10px var(--fourth-hover-color);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 /* Tag Overlay Styles */
 #tagOverlay {
     display: none;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     border-radius: 5px;
-    padding: 2.5px;
     margin-left: 10px;
+    flex: 1;
+    min-height: 40px;
+    max-height: 70px;
+    overflow-y: scroll;
+    margin-top: -5px;
 }
 
 .tag-overlay-item {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     color: white;
-    padding: 8px 10px;
+    padding: 6px 10px;
     border-radius: 5px;
-    margin: 5px;
+    margin: 3px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-size: small;
     border: 1px solid #226b9c7a;
+    white-space: nowrap;
 }
 
 .tag-overlay-item:hover {
@@ -428,10 +675,24 @@ h2::after { bottom: 0; }
 /* Bottom Controls Styles */
 #bottomControls {
     display: none;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     width: 100%;
     margin-top: 10px;
+    min-height: 50px;
+    max-height: 120px;
+    overflow-y: auto;
+    padding: 5px;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+}
+
+
+
+#addFrameButton, #cropButton, #frameCounter {
+    flex-shrink: 0;
+    margin: 3px;
 }
 
 /* Header and Output Styles */
@@ -656,6 +917,16 @@ h2::after { bottom: 0; }
     100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
 }
 
+@keyframes tagMove {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); box-shadow: 0 0 15px 5px var(--primary-hover-color); }
+    100% { transform: scale(1); }
+}
+
+.tag-move {
+    animation: tagMove 0.5s ease-in-out;
+}
+
 .button-pulse {
     animation: buttonPulse 0.3s ease-in-out;
 }
@@ -775,6 +1046,7 @@ h2::after { bottom: 0; }
     align-items: center;
     justify-content: center;
     box-shadow: 0px 0px 17px #1e8147, 0px 0px 0px 1px #1daf40a1;
+    margin-top: 7.5px;
 }
 
 /* Add this to the end of your main.css file */
@@ -825,6 +1097,178 @@ h2::after { bottom: 0; }
     margin-right: 5px;
     font-family: monospace;
     font-weight: bold;
+}
+
+/* Crop Overlay Styles */
+#cropOverlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 5;
+    
+}
+
+.crop-box {
+    position: absolute;
+    border: 2px solid var(--crop-handle-color);
+    cursor: move;
+    pointer-events: all;
+    box-sizing: border-box;
+}
+
+.crop-handle {
+    position: absolute;
+    width: var(--crop-handle-size);
+    height: var(--crop-handle-size);
+    background: var(--crop-handle-color);
+    border: 2px solid white;
+    border-radius: 50%;
+    pointer-events: all;
+}
+
+.crop-handle.nw { top: -5px; left: -5px; cursor: nw-resize; }
+.crop-handle.n  { top: -5px; left: 50%; transform: translateX(-50%); cursor: n-resize; }
+.crop-handle.ne { top: -5px; right: -5px; cursor: ne-resize; }
+.crop-handle.w  { top: 50%; left: -5px; transform: translateY(-50%); cursor: w-resize; }
+.crop-handle.e  { top: 50%; right: -5px; transform: translateY(-50%); cursor: e-resize; }
+.crop-handle.sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+.crop-handle.s  { bottom: -5px; left: 50%; transform: translateX(-50%); cursor: s-resize; }
+.crop-handle.se { bottom: -5px; right: -5px; cursor: se-resize; }
+
+#cropButton {
+    background-color: var(--third-color);
+    margin-left: 10px;
+}
+
+#cropButton:hover {
+    background-color: var(--third-hover-color);
+}
+
+#cropButton.active {
+    background-color: var(--fourth-color);
+}
+
+.tag-reorder.left {
+    right: calc(100% + 2px);
+    margin-right: 0;
+    margin-right: -15px;
+}
+
+.tag-reorder.right {
+    left: calc(100% + 2px);
+    margin-left: 0;
+    margin-left: -15px;
+}
+
+/* Add new styles for crop dimensions display */
+.crop-dimensions {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: all;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    top: 10px;
+    left: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.crop-dimensions input {
+    width: 60px;
+    padding: 2px 4px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: white;
+    border-radius: 3px;
+}
+
+.crop-dimensions label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.crop-dimensions button {
+    background: var(--secondary-color);
+    border: none;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.crop-dimensions button:hover {
+    background: var(--secondary-hover-color);
+}
+
+#cropSettingsButton {
+    background-color: var(--third-color);
+    margin: 0px;
+    margin-top: 3px;
+}
+
+#cropSettingsButton:hover {
+    background-color: var(--third-hover-color);
+}
+
+/* Update crop dimensions styles */
+.crop-dimensions {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--modal-bg);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--modal-border);
+}
+
+.crop-dimensions label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.crop-dimensions input {
+    width: 80px;
+    padding: 4px 8px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: white;
+    border-radius: 4px;
+}
+
+.crop-dimensions button {
+    background: var(--secondary-color);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 8px;
+    width: 100%;
+}
+
+.crop-dimensions button:hover {
+    background: var(--secondary-hover-color);
 }
     </style>
 </head>
@@ -958,6 +1402,7 @@ h2::after { bottom: 0; }
             </div>
         </div>
 
+        <!-- Video Container -->
         <div id="videoContainer">
             <!-- Add this new div for the placeholder -->
             <div id="videoPlaceholder" class="drop-zone">
@@ -966,8 +1411,12 @@ h2::after { bottom: 0; }
                 </svg>
                 <p>Drag and drop a video file here<br>or click <button id="uploadVideoButton">Upload Video</button><input type="file" id="videoInput" accept="video/*,.mkv,.avi,.mov,.flv,.wmv" style="display: none;"> to begin.</p>
             </div>
-            <!-- Existing video player -->
-            <video id="videoPlayer"></video>
+            <div class="video-wrapper" style="position: relative;">
+                <!-- Existing video player -->
+                <video id="videoPlayer"></video>
+                <!-- Crop Overlay -->
+                <div id="cropOverlay"></div>
+            </div>
             <div id="frameInfo"></div>
             <div id="timeline" style="display: none;">
                 <div id="progressLine"></div>
@@ -976,6 +1425,8 @@ h2::after { bottom: 0; }
             <div id="bottomControls" style="display: none;">
                 <button id="addFrameButton">Add/Remove Frame (F)</button>
                 <div id="frameCounter" style="margin-left: 10px; color: var(--secondary-color);"></div>
+                <button id="cropButton">Enable Crop</button>
+                <button id="cropSettingsButton" style="display: none;">Crop Settings</button>
                 <div class="controls-divider"></div>
                 <div id="tagOverlay"></div>
             </div>
@@ -1038,10 +1489,6 @@ h2::after { bottom: 0; }
                     <input type="number" id="imageQuality" min="1" max="100" value="90">
                 </div>
                 <div class="setting-item">
-                    <label for="zipFileName">ZIP File Name:</label>
-                    <input type="text" id="zipFileName" value="extracted_frames">
-                </div>
-                <div class="setting-item">
                     <label for="imageFilePrefix">Image File Prefix:</label>
                     <input type="text" id="imageFilePrefix" value="frame">
                 </div>
@@ -1100,7 +1547,10 @@ h2::after { bottom: 0; }
         shortcutOverlay: document.getElementById('shortcutOverlay'),
         showShortcutOverlayCheckbox: document.getElementById('showShortcutOverlay'),
         sidebarUploadButton: document.getElementById('sidebarUploadButton'),
-        sidebarVideoInput: document.getElementById('sidebarVideoInput')
+        sidebarVideoInput: document.getElementById('sidebarVideoInput'),
+        cropButton: document.getElementById('cropButton'),
+        cropOverlay: document.getElementById('cropOverlay'),
+        cropSettingsButton: document.getElementById('cropSettingsButton'),
     };
 
     // ---------------------------
@@ -1115,8 +1565,16 @@ h2::after { bottom: 0; }
     let isTagManagerOpen = false;
     let isSettingsModalOpen = false;
     let originalVideoName = '';
+    let lastUsedExportName = ''; // Store the last used export name
+    let lastCropDimensions = null; // Store the last crop dimensions
 
     let isScrubberDragging = false;
+    let isCropMode = false;
+    let cropBox = null;
+    let cropDimensions = null;
+
+    // Add these variables at the top with other state variables
+    let cropSettingsVisible = false;
 
     // ---------------------------
     // Settings
@@ -1131,8 +1589,8 @@ h2::after { bottom: 0; }
         export: {
             imageFormat: 'jpeg',
             imageQuality: 100,
-            zipFileName: 'Session_Data',
-            imageFilePrefix: 'Frame'
+            imageFilePrefix: 'Frame',
+            scaleFactor: 1 // Add this line
         },
         display: {
             showShortcutOverlay: true
@@ -1192,7 +1650,6 @@ h2::after { bottom: 0; }
     document.addEventListener('mouseup', handleDocumentMouseUp);
 
     // Modal Close Handlers
-    window.addEventListener('click', handleWindowClick);
     document.addEventListener('keydown', handleGlobalKeyDown);
 
     // Shortcut Inputs
@@ -1205,10 +1662,14 @@ h2::after { bottom: 0; }
         elements.helpModal.style.display = 'block';
     });
 
-    window.addEventListener('click', (event) => {
-        if (event.target === elements.helpModal) {
-            elements.helpModal.style.display = 'none';
-        }
+    let helpModalMouseDownTarget = null;
+    elements.helpModal.addEventListener('mousedown', (event) => {
+       helpModalMouseDownTarget = event.target;
+    });
+    elements.helpModal.addEventListener('mouseup', (event) => {
+       if (helpModalMouseDownTarget === elements.helpModal && event.target === elements.helpModal) {
+           elements.helpModal.style.display = 'none';
+       }
     });
 
     // Settings Modal
@@ -1217,16 +1678,14 @@ h2::after { bottom: 0; }
         isSettingsModalOpen = true;
     });
 
-    window.addEventListener('click', (event) => {
-        if (event.target === elements.settingsModal) {
-            closeSettingsModal();
-        }
+    let settingsModalMouseDownTarget = null;
+    elements.settingsModal.addEventListener('mousedown', (event) => {
+       settingsModalMouseDownTarget = event.target;
     });
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && elements.settingsModal.style.display === 'block') {
-            closeSettingsModal();
-        }
+    elements.settingsModal.addEventListener('mouseup', (event) => {
+       if (settingsModalMouseDownTarget === elements.settingsModal && event.target === elements.settingsModal) {
+           closeSettingsModal();
+       }
     });
 
     // Settings Inputs
@@ -1318,6 +1777,7 @@ h2::after { bottom: 0; }
 
     function handleVideoFile(file) {
         originalVideoName = file.name;
+        lastUsedExportName = ''; // Reset last used export name when new video is loaded
         resetVideoState();
 
         videoSrc = URL.createObjectURL(file);
@@ -1480,24 +1940,58 @@ h2::after { bottom: 0; }
     }
 
     function updateExtractButtonState() {
-        extractButton.disabled = selectedFrames.length === 0 || !videoPlayer.src;
+        elements.extractButton.disabled = selectedFrames.length === 0 || !elements.videoPlayer.src;
     }
 
+    // Update the resizeVideo function
     function resizeVideo() {
-        const aspectRatio = videoPlayer.videoWidth / videoPlayer.videoHeight;
-        const newHeight = videoPlayer.offsetWidth / aspectRatio;
+        if (!elements.videoPlayer.videoWidth || !elements.videoPlayer.videoHeight) return;
+
+        const containerWidth = elements.mainContent.offsetWidth;
+        const aspectRatio = elements.videoPlayer.videoWidth / elements.videoPlayer.videoHeight;
         const maxHeight = window.innerHeight * 0.8;
+        const maxWidth = Math.min(containerWidth, 1200); // Limit max width
+        
+        let newWidth = maxWidth;
+        let newHeight = newWidth / aspectRatio;
 
         if (newHeight > maxHeight) {
-            videoPlayer.style.height = `${maxHeight}px`;
-            videoPlayer.style.width = `${maxHeight * aspectRatio}px`;
-        } else {
-            videoPlayer.style.height = `${newHeight}px`;
-            videoPlayer.style.width = '100%';
+            newHeight = maxHeight;
+            newWidth = newHeight * aspectRatio;
         }
 
-        if (videoPlayer.readyState > 0) {
-            frameInfo.style.display = 'block';
+        // Set video dimensions
+        elements.videoPlayer.style.width = `${newWidth}px`;
+        elements.videoPlayer.style.height = `${newHeight}px`;
+
+        // Ensure the video wrapper matches video dimensions exactly
+        const videoWrapper = elements.videoPlayer.closest('.video-wrapper');
+        if (videoWrapper) {
+            videoWrapper.style.width = `${newWidth}px`;
+            videoWrapper.style.height = `${newHeight}px`;
+        }
+
+        // Update crop overlay dimensions
+        if (elements.cropOverlay && elements.cropOverlay.style.display !== 'none') {
+            elements.cropOverlay.style.width = `${newWidth}px`;
+            elements.cropOverlay.style.height = `${newHeight}px`;
+            
+            // Update crop box dimensions if it exists
+            if (cropBox && cropDimensions) {
+                const boxWidth = cropDimensions.width * newWidth;
+                const boxHeight = cropDimensions.height * newHeight;
+                const boxLeft = cropDimensions.x * newWidth;
+                const boxTop = cropDimensions.y * newHeight;
+                
+                cropBox.style.width = `${boxWidth}px`;
+                cropBox.style.height = `${boxHeight}px`;
+                cropBox.style.left = `${boxLeft}px`;
+                cropBox.style.top = `${boxTop}px`;
+            }
+        }
+
+        if (elements.videoPlayer.readyState > 0) {
+            elements.frameInfo.style.display = 'block';
             updateFrameInfo();
         }
     }
@@ -1508,74 +2002,146 @@ h2::after { bottom: 0; }
     function confirmExtraction() {
         const frameCount = selectedFrames.length;
 
-        const exportOptions = `
-            <p>Choose export option:</p>
-            <button id="exportFramesOnly" class="export-button">Export Frames Only</button>
-            <button id="exportFramesWithSession" class="export-button">Export Frames with Session Data</button>
-        `;
-
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.style.display = 'block';
 
         const modalContent = document.createElement('div');
         modalContent.className = 'modal-content';
+
+        // Use last used export name if available, otherwise use video filename
+        const defaultExportName = lastUsedExportName || originalVideoName.replace(/\.[^/.]+$/, "");
+
+        // NEW: Compute original dimensions based on crop if applied
+        const videoWidth = elements.videoPlayer.videoWidth;
+        const videoHeight = elements.videoPlayer.videoHeight;
+        let origWidth, origHeight;
+        if (cropDimensions) {
+            origWidth = Math.floor(cropDimensions.width * videoWidth);
+            origHeight = Math.floor(cropDimensions.height * videoHeight);
+        } else {
+            origWidth = videoWidth;
+            origHeight = videoHeight;
+        }
+
         modalContent.innerHTML = `
-            <h3>Export ${frameCount} Frames</h3>
-            ${exportOptions}
+            <div class="export-modal-header">
+                <h3>Export ${frameCount} Frame${frameCount > 1 ? 's' : ''}</h3>
+            </div>
+            
+            <div class="export-section">
+                <label for="exportName">Export Name</label>
+                <input type="text" id="exportName" value="${defaultExportName}" placeholder="Enter export name...">
+            </div>
+            
+            <div class="export-section">
+                <label>Image Dimensions</label>
+                <div class="dimensions-display">
+                    <div class="dimensions-box">
+                        <p class="dim-label">Original Size</p>
+                        <p class="dim-value">${origWidth} × ${origHeight}</p>
+                    </div>
+                    <div class="dimensions-box">
+                        <p class="dim-label-new">New Size</p>
+                        <p class="dim-value" id="newDimensionsDisplay">${Math.floor(origWidth * settings.export.scaleFactor)} × ${Math.floor(origHeight * settings.export.scaleFactor)}</p>
+                    </div>
+                </div>
+                <div class="scale-factor-container">
+                    <label for="scaleFactor">Scale Factor (%):</label>
+                    <input type="number" id="scaleFactor" min="10" max="100" step="1" value="${Math.floor(settings.export.scaleFactor * 100)}">
+                    <span>(10 - 100%)</span>
+                </div>
+            </div>
+            
+            <div class="export-buttons">
+                <button id="exportFramesOnly" class="export-button">Export Frames Only</button>
+                <button id="exportFramesWithSession" class="export-button">Export with Session</button>
+            </div>
         `;
-
-        // Add styles for the export buttons
-        const style = document.createElement('style');
-        style.textContent = `
-            .export-button {
-                background-color: var(--secondary-color);
-                color: white;
-                border: 1px solid #ffffff26;
-                padding: 10px 20px;
-                margin: 10px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-weight: bold;
-                transition: all 0.3s ease;
-            }
-            #exportFramesWithSession {
-                background-color: var(--primary-color);
-            }
-            .export-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            }
-        `;
-        document.head.appendChild(style);
-
         modal.appendChild(modalContent);
         document.body.appendChild(modal);
 
+        // Update new dimensions display when scale factor changes
+        document.getElementById('scaleFactor').addEventListener('input', function() {
+            let percentage = parseFloat(this.value);
+            if (isNaN(percentage)) percentage = 100;
+            percentage = Math.max(10, Math.min(100, percentage));
+            const sf = percentage / 100;
+            const newW = Math.floor(origWidth * sf);
+            const newH = Math.floor(origHeight * sf);
+            document.getElementById('newDimensionsDisplay').textContent = `${newW} × ${newH}`;
+            settings.export.scaleFactor = sf; // Save the scale factor as a decimal
+            saveSettings();
+        });
+
         document.getElementById('exportFramesOnly').addEventListener('click', () => {
+            const exportName = document.getElementById('exportName').value.trim() || defaultExportName;
+            lastUsedExportName = exportName; // Save the export name
+            let percentage = parseFloat(document.getElementById('scaleFactor').value);
+            if (isNaN(percentage)) percentage = 100;
+            const scaleFactorValue = percentage / 100;
             document.body.removeChild(modal);
-            extractFrames(false);
+            extractFrames(false, exportName, scaleFactorValue);
         });
 
         document.getElementById('exportFramesWithSession').addEventListener('click', () => {
+            const exportName = document.getElementById('exportName').value.trim() || defaultExportName;
+            lastUsedExportName = exportName; // Save the export name
+            let percentage = parseFloat(document.getElementById('scaleFactor').value);
+            if (isNaN(percentage)) percentage = 100;
+            const scaleFactorValue = percentage / 100;
             document.body.removeChild(modal);
-            extractFrames(true);
+            extractFrames(true, exportName, scaleFactorValue);
         });
 
-        // Close modal when clicking outside
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
+        // Handle modal close on overlay click
+        let modalClickStartedOnOverlay = false;
+        let modalContentClicked = false;
+        
+        // Check if click is inside modal content
+        const isClickInsideContent = (event) => {
+            return modalContent.contains(event.target) || event.target === modalContent;
+        };
+        
+        modal.addEventListener('mousedown', (event) => {
+            modalClickStartedOnOverlay = event.target === modal;
+            modalContentClicked = isClickInsideContent(event);
+        });
+        
+        modal.addEventListener('mouseup', (event) => {
+            // Only close if both mousedown and mouseup were on the overlay
+            // and we didn't interact with the content
+            if (modalClickStartedOnOverlay && 
+                event.target === modal && 
+                !modalContentClicked) {
+                const exportName = document.getElementById('exportName').value.trim();
+                if (exportName) {
+                    lastUsedExportName = exportName;
+                }
                 document.body.removeChild(modal);
             }
+            modalClickStartedOnOverlay = false;
+            modalContentClicked = false;
+        });
+        
+        // Prevent accidental closes if mouse moves over content
+        modalContent.addEventListener('mouseover', () => {
+            modalContentClicked = true;
         });
     }
 
-    async function extractFrames(includeSessionData = true) {
+    // Modify extractFrames to accept scaleFactor
+    async function extractFrames(includeSessionData = true, exportName, scaleFactor) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
         zipInstance = new JSZip();
-        const sessionFolder = zipInstance.folder(settings.export.zipFileName);
+        
+        // Create main folder with export name
+        const mainFolder = zipInstance.folder(exportName);
+        
+        // Create images folder if including session data
+        const imagesFolder = includeSessionData ? mainFolder.folder('images') : mainFolder;
 
         elements.extractButton.disabled = true;
 
@@ -1589,7 +2155,7 @@ h2::after { bottom: 0; }
 
         try {
             for (let i = 0; i < selectedFrames.length; i++) {
-                await extractSingleFrame(selectedFrames[i], canvas, ctx, sessionFolder, i);
+                await extractSingleFrame(selectedFrames[i], canvas, ctx, imagesFolder, i, scaleFactor);
                 extractedFrames++;
                 loadingMessage.textContent = `Extracting frames: ${extractedFrames} / ${totalFrames}`;
             }
@@ -1597,9 +2163,9 @@ h2::after { bottom: 0; }
             loadingMessage.textContent = 'Frames extracted. Processing...';
 
             if (includeSessionData) {
-                await addVideoAndSessionData(sessionFolder);
-                const readmeContent = createReadmeContent();
-                sessionFolder.file('README.txt', readmeContent);
+                await addVideoAndSessionData(mainFolder, exportName);
+                const readmeContent = createReadmeContent(exportName);
+                mainFolder.file('README.txt', readmeContent);
             }
 
             const loadingInterval = animateLoadingMessage('Preparing ZIP file', loadingMessage);
@@ -1607,12 +2173,7 @@ h2::after { bottom: 0; }
             const zipBlob = await zipInstance.generateAsync({ type: 'blob' });
             clearInterval(loadingInterval);
             
-            // Modify the zip file name if only frames are exported
-            const zipFileName = includeSessionData 
-                ? `${settings.export.zipFileName}.zip`
-                : `${settings.export.zipFileName}_frames_only.zip`;
-            
-            saveAs(zipBlob, zipFileName);
+            saveAs(zipBlob, `${exportName}.zip`);
 
             loadingMessage.textContent = 'Download ready.';
             elements.extractButton.disabled = false;
@@ -1627,50 +2188,85 @@ h2::after { bottom: 0; }
         }
     }
 
-    function createLoadingMessage(initialText) {
-        const messageElem = document.createElement('div');
-        messageElem.style.color = 'white';
-        messageElem.style.marginLeft = '20px';
-        messageElem.style.fontSize = '18px';
-        messageElem.textContent = initialText;
-        return messageElem;
-    }
-
-    async function extractSingleFrame(time, canvas, ctx, sessionFolder, index) {
+    // Modify extractSingleFrame to apply scaleFactor when exporting frames
+    async function extractSingleFrame(time, canvas, ctx, folder, index, scaleFactor) {
         return new Promise((resolve) => {
             elements.videoPlayer.currentTime = time;
             elements.videoPlayer.onseeked = () => {
-                canvas.width = elements.videoPlayer.videoWidth;
-                canvas.height = elements.videoPlayer.videoHeight;
-                ctx.drawImage(elements.videoPlayer, 0, 0, canvas.width, canvas.height);
+                const videoWidth = elements.videoPlayer.videoWidth;
+                const videoHeight = elements.videoPlayer.videoHeight;
+                let origW, origH;
+                if (cropDimensions) {
+                    const cropX = Math.floor(cropDimensions.x * videoWidth);
+                    const cropY = Math.floor(cropDimensions.y * videoHeight);
+                    const cropW = Math.floor(cropDimensions.width * videoWidth);
+                    const cropH = Math.floor(cropDimensions.height * videoHeight);
+                    origW = cropW;
+                    origH = cropH;
+                    canvas.width = cropW;
+                    canvas.height = cropH;
+                    ctx.drawImage(elements.videoPlayer, 
+                        cropX, cropY, cropW, cropH,
+                        0, 0, cropW, cropH);
+                } else {
+                    origW = videoWidth;
+                    origH = videoHeight;
+                    canvas.width = videoWidth;
+                    canvas.height = videoHeight;
+                    ctx.drawImage(elements.videoPlayer, 0, 0, videoWidth, videoHeight);
+                }
 
                 const mimeType = `image/${settings.export.imageFormat}`;
                 const quality = settings.export.imageFormat === 'png' ? undefined : settings.export.imageQuality / 100;
-
-                canvas.toBlob(async (blob) => {
-                    if (blob) {
-                        const frameNumber = index + 1;
-                        const baseFilename = `${settings.export.imageFilePrefix}_${frameNumber}.${settings.export.imageFormat}`;
-                        const tagsForFrame = frameTags[baseFilename] || [];
-                        const taggedFilename = tagsForFrame.length > 0
-                            ? `[${tagsForFrame.join('][')}]${baseFilename}`
-                            : baseFilename;
-                        sessionFolder.file(taggedFilename, blob);
-                    } else {
-                        console.error(`Failed to extract frame at ${time}s`);
-                    }
-                    resolve();
-                }, mimeType, quality);
+                
+                if (scaleFactor && scaleFactor < 1) {
+                    const newW = Math.floor(origW * scaleFactor);
+                    const newH = Math.floor(origH * scaleFactor);
+                    let scaledCanvas = document.createElement('canvas');
+                    scaledCanvas.width = newW;
+                    scaledCanvas.height = newH;
+                    const sctx = scaledCanvas.getContext('2d');
+                    sctx.drawImage(canvas, 0, 0, origW, origH, 0, 0, newW, newH);
+                    scaledCanvas.toBlob(async (blob) => {
+                        if (blob) {
+                            const frameNumber = index + 1;
+                            const baseFilename = `${settings.export.imageFilePrefix}_${frameNumber}.${settings.export.imageFormat}`;
+                            const tagsForFrame = frameTags[baseFilename] || [];
+                            const taggedFilename = tagsForFrame.length > 0
+                                ? `[${tagsForFrame.join('][')}]${baseFilename}`
+                                : baseFilename;
+                            folder.file(taggedFilename, blob);
+                        } else {
+                            console.error(`Failed to extract frame at ${time}s`);
+                        }
+                        resolve();
+                    }, mimeType, quality);
+                } else {
+                    canvas.toBlob(async (blob) => {
+                        if (blob) {
+                            const frameNumber = index + 1;
+                            const baseFilename = `${settings.export.imageFilePrefix}_${frameNumber}.${settings.export.imageFormat}`;
+                            const tagsForFrame = frameTags[baseFilename] || [];
+                            const taggedFilename = tagsForFrame.length > 0
+                                ? `[${tagsForFrame.join('][')}]${baseFilename}`
+                                : baseFilename;
+                            folder.file(taggedFilename, blob);
+                        } else {
+                            console.error(`Failed to extract frame at ${time}s`);
+                        }
+                        resolve();
+                    }, mimeType, quality);
+                }
             };
         });
     }
 
-    async function addVideoAndSessionData(sessionFolder) {
+    async function addVideoAndSessionData(mainFolder, exportName) {
         try {
             const videoBlob = await fetch(videoSrc).then(res => res.blob());
             let videoExtension = getVideoExtension(videoBlob, originalVideoName);
             const videoFilename = `video.${videoExtension}`;
-            sessionFolder.file(videoFilename, videoBlob);
+            mainFolder.file(videoFilename, videoBlob);
 
             const sessionData = {
                 videoName: originalVideoName,
@@ -1680,23 +2276,18 @@ h2::after { bottom: 0; }
                 frameTags: frameTags,
                 settings: settings,
                 tags: tags,
-                zipFileName: settings.export.zipFileName
+                exportName: exportName,
+                // Added crop state
+                cropEnabled: isCropMode,
+                cropDimensions: cropDimensions
             };
-            sessionFolder.file('session.json', JSON.stringify(sessionData, null, 2));
+            mainFolder.file('session.json', JSON.stringify(sessionData, null, 2));
         } catch (error) {
             throw new Error(`Failed to add video and session data: ${error.message}`);
         }
     }
-    function getVideoExtension(videoBlob, originalName) {
-        let extension = videoBlob.type.split('/')[1];
-        if (extension === 'plain' || !extension) {
-            const parts = originalName.split('.');
-            extension = parts.length > 1 ? parts.pop().toLowerCase() : 'mkv';
-        }
-        return extension;
-    }
 
-    function createReadmeContent() {
+    function createReadmeContent(exportName) {
         const sessionData = {
             videoName: originalVideoName,
             videoLength: elements.videoPlayer.duration,
@@ -1704,7 +2295,7 @@ h2::after { bottom: 0; }
             frameTags: frameTags,
             settings: settings,
             tags: tags,
-            zipFileName: settings.export.zipFileName
+            exportName: exportName
         };
 
         return `VideoFrames: Tag & Extract - Session Archive
@@ -1734,6 +2325,27 @@ For more information on using VideoFrames: Tag & Extract, please refer to the he
 
 Created on: ${new Date().toLocaleString()}
 `;
+    }
+
+    function createLoadingMessage(initialText) {
+        const messageElem = document.createElement('div');
+        messageElem.style.color = 'white';
+        messageElem.style.marginLeft = '20px';
+        messageElem.style.fontSize = '18px';
+        messageElem.textContent = initialText;
+        return messageElem;
+    }
+
+    function getVideoExtension(videoBlob, originalVideoName) {
+        let extension = videoBlob.type.split('/')[1];
+        if (extension === 'quicktime') {
+            extension = 'mov';
+        }
+        if (extension === 'plain' || !extension) {
+            const parts = originalVideoName.split('.');
+            extension = parts.length > 1 ? parts.pop().toLowerCase() : 'mkv';
+        }
+        return extension;
     }
 
     function formatDuration(seconds) {
@@ -1823,14 +2435,67 @@ Created on: ${new Date().toLocaleString()}
         const existingIndex = selectedFrames.findIndex(time => Math.abs(time - currentTime) < 0.1);
 
         if (existingIndex === -1) {
+            // Add new frame
             selectedFrames.push(currentTime);
+            
+            // Sort frames and get the new index of our just-added frame
+            selectedFrames.sort((a, b) => a - b);
+            const newIndex = selectedFrames.findIndex(time => time === currentTime);
+            
+            // If the new frame wasn't added at the end, we need to shift all frame tags
+            if (newIndex < selectedFrames.length - 1) {
+                // Create a new frameTags object
+                const newFrameTags = {};
+                
+                // Copy tags for frames before the insertion point as is
+                for (let i = 0; i < newIndex; i++) {
+                    const frameName = `${settings.export.imageFilePrefix}_${i + 1}.${settings.export.imageFormat}`;
+                    if (frameTags[frameName]) {
+                        newFrameTags[frameName] = frameTags[frameName];
+                    }
+                }
+                
+                // Skip the new frame (it starts with no tags)
+                
+                // Shift all subsequent frame tags up by one
+                for (let i = newIndex; i < selectedFrames.length - 1; i++) {
+                    const oldFrameName = `${settings.export.imageFilePrefix}_${i + 1}.${settings.export.imageFormat}`;
+                    const newFrameName = `${settings.export.imageFilePrefix}_${i + 2}.${settings.export.imageFormat}`;
+                    if (frameTags[oldFrameName]) {
+                        newFrameTags[newFrameName] = frameTags[oldFrameName];
+                    }
+                }
+                
+                // Replace the old frameTags with our new one
+                frameTags = newFrameTags;
+            }
         } else {
+            // Remove frame
             selectedFrames.splice(existingIndex, 1);
-            const frameFilename = `${settings.export.imageFilePrefix}_${existingIndex + 1}.${settings.export.imageFormat}`;
-            delete frameTags[frameFilename];
+            
+            // Create a new frameTags object
+            const newFrameTags = {};
+            
+            // Remove tags for the deleted frame and shift remaining tags down
+            for (let i = 0; i < selectedFrames.length; i++) {
+                const oldFrameName = `${settings.export.imageFilePrefix}_${i + 2}.${settings.export.imageFormat}`;
+                const newFrameName = `${settings.export.imageFilePrefix}_${i + 1}.${settings.export.imageFormat}`;
+                if (i < existingIndex) {
+                    // Keep the same frame number for frames before the deleted one
+                    const frameName = `${settings.export.imageFilePrefix}_${i + 1}.${settings.export.imageFormat}`;
+                    if (frameTags[frameName]) {
+                        newFrameTags[frameName] = frameTags[frameName];
+                    }
+                } else if (frameTags[oldFrameName]) {
+                    // Shift frame numbers down for frames after the deleted one
+                    newFrameTags[newFrameName] = frameTags[oldFrameName];
+                }
+            }
+            
+            // Replace the old frameTags with our new one
+            frameTags = newFrameTags;
         }
 
-        selectedFrames.sort((a, b) => a - b);
         updateScreenshotIndicators();
         updateFrameInfo();
         updateFrameCounter();
@@ -1869,21 +2534,44 @@ Created on: ${new Date().toLocaleString()}
 
     function handleIndicatorMouseEnter(event) {
         const time = parseFloat(event.target.dataset.time);
+        const indicators = elements.timeline.querySelectorAll('.screenshot-indicator');
+        
+        // Remove active class from all indicators first
+        indicators.forEach(ind => ind.classList.remove('active'));
+        
+        // Add active class only to the current indicator
+        event.target.classList.add('active');
+        
         elements.videoPlayer.currentTime = time;
         updateScrubberPosition();
+        updateFrameInfo();
+        updateTagOverlay();
     }
 
     function updateActiveIndicator() {
+        const currentTime = elements.videoPlayer.currentTime;
         const indicators = elements.timeline.querySelectorAll('.screenshot-indicator');
+        let closestIndicator = null;
+        let minDistance = 0.1; // Threshold of 0.1 seconds
+        
         indicators.forEach((indicator, index) => {
             const indicatorTime = parseFloat(indicator.dataset.time);
-            if (Math.abs(elements.videoPlayer.currentTime - indicatorTime) < 0.5) {
-                indicator.classList.add('active');
+            const distance = Math.abs(currentTime - indicatorTime);
+            
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestIndicator = indicator;
                 currentIndicatorIndex = index;
-            } else {
-                indicator.classList.remove('active');
             }
+            
+            // Remove active class from all indicators
+            indicator.classList.remove('active');
         });
+        
+        // Add active class only to the closest indicator if within threshold
+        if (closestIndicator) {
+            closestIndicator.classList.add('active');
+        }
     }
 
     function updateFrameInfo() {
@@ -1931,10 +2619,11 @@ Created on: ${new Date().toLocaleString()}
         const currentFrame = getCurrentFrameFilename();
         const tagsForFrame = frameTags[currentFrame] || [];
 
-        tags.slice(0, 9).forEach((tag, index) => { // Limit to first 9 tags
+        tags.forEach((tag, index) => {
             const tagElem = document.createElement('span');
             tagElem.className = 'tag-overlay-item';
-            tagElem.textContent = `${tag} (${index + 1})`;
+            const shortcut = getShortcutDisplay(index);
+            tagElem.textContent = shortcut ? `${tag} (${shortcut})` : tag;
             tagElem.dataset.tag = tag;
 
             if (tagsForFrame.includes(tag)) {
@@ -2027,15 +2716,63 @@ Created on: ${new Date().toLocaleString()}
         tags.forEach((tag, index) => {
             const tagElem = document.createElement('span');
             tagElem.className = 'tag-item';
-            
-            // Add shortcut number if tag is within first 9 tags
-            const shortcutText = index < 9 ? ` (${index + 1})` : '';
-            tagElem.innerHTML = `${tag}${shortcutText} <span class="delete-tag">&times;</span>`;
+            tagElem.dataset.tagName = tag; // Add data attribute for tracking
+            // Add shortcut number using getShortcutDisplay for all tags
+            const shortcutText = getShortcutDisplay(index) ? ` (${getShortcutDisplay(index)})` : '';
+            tagElem.innerHTML = `${tag}${shortcutText} <span class="delete-tag" title="Remove Tag">×</span>`;
             tagElem.dataset.tag = tag;
+
+            // Add reorder buttons
+            if (tags.length > 1) { // Only show reorder if there's more than one tag
+                // Left reorder
+                if (index > 0) {
+                    const leftReorder = document.createElement('div');
+                    leftReorder.className = 'tag-reorder left';
+                    leftReorder.innerHTML = `
+                        <button title="Move Left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                    `;
+                    leftReorder.querySelector('button').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const btn = e.currentTarget;
+                        btn.style.transform = 'scale(0.9)';
+                        setTimeout(() => btn.style.transform = '', 100);
+                        moveTag(index, index - 1, tag); // Pass the tag name
+                    });
+                    tagElem.appendChild(leftReorder);
+                }
+                
+                // Right reorder
+                if (index < tags.length - 1) {
+                    const rightReorder = document.createElement('div');
+                    rightReorder.className = 'tag-reorder right';
+                    rightReorder.innerHTML = `
+                        <button title="Move Right">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    `;
+                    rightReorder.querySelector('button').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const btn = e.currentTarget;
+                        btn.style.transform = 'scale(0.9)';
+                        setTimeout(() => btn.style.transform = '', 100);
+                        moveTag(index, index + 1, tag); // Pass the tag name
+                    });
+                    tagElem.appendChild(rightReorder);
+                }
+            }
 
             const deleteButton = tagElem.querySelector('.delete-tag');
             deleteButton.addEventListener('click', (e) => {
                 e.stopPropagation();
+                const btn = e.currentTarget;
+                btn.style.transform = 'scale(0.9)';
+                setTimeout(() => btn.style.transform = '', 100);
                 deleteTag(tag);
             });
 
@@ -2056,6 +2793,38 @@ Created on: ${new Date().toLocaleString()}
         renderTags();
         updateTagOverlay();
         updateFrameInfo();
+    }
+
+    // Add moveTag function
+    function moveTag(fromIndex, toIndex, tagName) {
+        // Swap tags
+        const tag = tags[fromIndex];
+        tags.splice(fromIndex, 1);
+        tags.splice(toIndex, 0, tag);
+        
+        // Update UI
+        renderTags();
+        updateTagOverlay();
+        
+        // Find and animate the moved tag using the data attribute
+        setTimeout(() => {
+            const movedTagElement = elements.tagList.querySelector(`[data-tag-name="${tagName}"]`);
+            if (movedTagElement) {
+                movedTagElement.classList.add('tag-move');
+                // Remove the animation class after it completes
+                movedTagElement.addEventListener('animationend', () => {
+                    movedTagElement.classList.remove('tag-move');
+                }, { once: true });
+            }
+        }, 0);
+        
+        // Update any frames that have these tags
+        for (const frame in frameTags) {
+            if (frameTags[frame].length > 0) {
+                updateFrameInfo();
+                break;
+            }
+        }
     }
 
     // ---------------------------
@@ -2105,26 +2874,32 @@ Created on: ${new Date().toLocaleString()}
             addFrame();
             animateAddFrameButton();
         } else if (event.key === shortcuts.prevFrame) {
-            //console.log(`Key pressed: ${key}`);
-
-            navigateIndicators(-1);
+            event.preventDefault();
+            if (event.shiftKey) {
+                const secondsJump = .25; // jump 1 second instead of a fraction of a frame
+                elements.videoPlayer.currentTime = clampTime(elements.videoPlayer.currentTime - secondsJump);
+                updateAllAfterTimeChange();
+            } else {
+                navigateIndicators(-1);
+            }
         } else if (event.key === shortcuts.nextFrame) {
-            //console.log(`Key pressed: ${key}`);
-
-            navigateIndicators(1);
-        } else if (isNumberKey(key)) {
-            const tagIndex = parseInt(key) - 1;
-            if (tagIndex < tags.length) {
+            event.preventDefault();
+            if (event.shiftKey) {
+                const secondsJump = .25; // jump 1 second instead of a fraction of a frame
+                elements.videoPlayer.currentTime = clampTime(elements.videoPlayer.currentTime + secondsJump);
+                updateAllAfterTimeChange();
+            } else {
+                navigateIndicators(1);
+            }
+        } else {
+            const tagIndex = getTagIndexFromKey(event.key);
+            if (tagIndex !== null && tagIndex < tags.length) {
                 toggleTagForCurrentFrame(tags[tagIndex]);
                 updateTagOverlay();
                 updateFrameInfo();
             }
         }
     });
-
-    function isNumberKey(key) {
-        return /^[1-9]$/.test(key);
-    }
 
     function navigateIndicators(direction) {
         if (!elements.videoPlayer.src || elements.videoPlayer.readyState === 0) {
@@ -2321,7 +3096,6 @@ Created on: ${new Date().toLocaleString()}
         document.getElementById('openTagManagerShortcut').value = settings.shortcuts.openTagManager;
         document.getElementById('imageFormat').value = settings.export.imageFormat;
         document.getElementById('imageQuality').value = settings.export.imageQuality;
-        document.getElementById('zipFileName').value = settings.export.zipFileName;
         document.getElementById('imageFilePrefix').value = settings.export.imageFilePrefix;
         document.getElementById('showShortcutOverlay').checked = settings.display.showShortcutOverlay;
 
@@ -2352,6 +3126,14 @@ Created on: ${new Date().toLocaleString()}
             settings = {
                 ...settings,
                 ...parsedSettings,
+                shortcuts: {
+                    ...settings.shortcuts,
+                    ...parsedSettings.shortcuts
+                },
+                export: {
+                    ...settings.export,
+                    ...parsedSettings.export
+                },
                 display: {
                     ...settings.display,
                     ...parsedSettings.display
@@ -2414,6 +3196,27 @@ Created on: ${new Date().toLocaleString()}
         selectedFrames = sessionData.selectedFrames || [];
         frameTags = sessionData.frameTags || {};
 
+        // Restore crop state if available
+        if (sessionData.cropEnabled) {
+            isCropMode = true;
+            elements.cropButton.classList.add('active');
+            elements.cropButton.textContent = 'Disable Crop';
+            elements.cropSettingsButton.style.display = 'inline-block';
+            if (sessionData.cropDimensions) {
+                cropDimensions = sessionData.cropDimensions;
+                lastCropDimensions = sessionData.cropDimensions; // Store in lastCropDimensions as well
+            }
+            initializeCropOverlay();
+        } else {
+            isCropMode = false;
+            elements.cropButton.classList.remove('active');
+            elements.cropButton.textContent = 'Enable Crop';
+            elements.cropSettingsButton.style.display = 'none';
+            cropDimensions = null;
+            lastCropDimensions = null; // Clear lastCropDimensions if crop was disabled
+            removeCropOverlay();
+        }
+
         loadSettings();
         renderTags();
         updateScreenshotIndicators();
@@ -2449,6 +3252,7 @@ Created on: ${new Date().toLocaleString()}
         updateTagOverlay();
         updateFrameCounter();
         updateFrameInfo();
+        updateExtractButtonState();
     }
     async function findVideoFile(zip, sessionData) {
         console.log('Finding video file in zip...');
@@ -2514,6 +3318,567 @@ Created on: ${new Date().toLocaleString()}
             closeTagManager();
         }
     }
+
+    // Crop Overlay Functions
+    function showCropOverlay(event) {
+        const rect = elements.videoPlayer.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const width = rect.width;
+        const height = rect.height;
+
+        const cropBox = document.createElement('div');
+        cropBox.className = 'crop-box';
+        cropBox.style.position = 'absolute';
+        cropBox.style.left = `${x}px`;
+        cropBox.style.top = `${y}px`;
+        cropBox.style.width = `${width}px`;
+        cropBox.style.height = `${height}px`;
+        cropBox.style.border = '2px dashed var(--crop-handle-color)';
+        cropBox.style.boxShadow = '0 0 0 9999px rgba(0, 0, 0, 0.5)';
+        cropBox.style.cursor = 'move';
+
+        const nw = document.createElement('div');
+        nw.className = 'crop-handle nw';
+        nw.style.position = 'absolute';
+        nw.style.left = '-5px';
+        nw.style.top = '-5px';
+        nw.style.width = '10px';
+        nw.style.height = '10px';
+        nw.style.border = '2px solid white';
+        nw.style.borderRadius = '50%';
+        nw.style.background = 'var(--crop-handle-color)';
+        nw.addEventListener('mousedown', handleCropResize);
+
+        const ne = document.createElement('div');
+        ne.className = 'crop-handle ne';
+        ne.style.position = 'absolute';
+        ne.style.right = '-5px';
+        ne.style.top = '-5px';
+        ne.style.width = '10px';
+        ne.style.height = '10px';
+        ne.style.border = '2px solid white';
+        ne.style.borderRadius = '50%';
+        ne.style.background = 'var(--crop-handle-color)';
+        ne.addEventListener('mousedown', handleCropResize);
+
+        const sw = document.createElement('div');
+        sw.className = 'crop-handle sw';
+        sw.style.position = 'absolute';
+        sw.style.left = '-5px';
+        sw.style.bottom = '-5px';
+        sw.style.width = '10px';
+        sw.style.height = '10px';
+        sw.style.border = '2px solid white';
+        sw.style.borderRadius = '50%';
+        sw.style.background = 'var(--crop-handle-color)';
+        sw.addEventListener('mousedown', handleCropResize);
+
+        const se = document.createElement('div');
+        se.className = 'crop-handle se';
+        se.style.position = 'absolute';
+        se.style.right = '-5px';
+        se.style.bottom = '-5px';
+        se.style.width = '10px';
+        se.style.height = '10px';
+        se.style.border = '2px solid white';
+        se.style.borderRadius = '50%';
+        se.style.background = 'var(--crop-handle-color)';
+        se.addEventListener('mousedown', handleCropResize);
+
+        cropBox.appendChild(nw);
+        cropBox.appendChild(ne);
+        cropBox.appendChild(sw);
+        cropBox.appendChild(se);
+
+        document.body.appendChild(cropBox);
+
+        document.addEventListener('mousemove', handleCropMove);
+        document.addEventListener('mouseup', handleCropRelease);
+    }
+
+    function handleCropResize(event) {
+        event.preventDefault();
+        document.body.classList.add('crop-resizing');
+        document.addEventListener('mousemove', handleCropResizeMove, true);
+        document.addEventListener('mouseup', handleCropRelease, true);
+    }
+
+    function handleCropResizeMove(event) {
+        event.preventDefault();
+        const rect = elements.videoPlayer.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const width = rect.width;
+        const height = rect.height;
+
+        const cropBox = document.querySelector('.crop-box');
+        cropBox.style.left = `${x}px`;
+        cropBox.style.top = `${y}px`;
+        cropBox.style.width = `${width}px`;
+        cropBox.style.height = `${height}px`;
+    }
+
+    function handleCropRelease() {
+        document.body.classList.remove('crop-resizing');
+        document.removeEventListener('mousemove', handleCropResizeMove, true);
+        document.removeEventListener('mouseup', handleCropRelease, true);
+    }
+
+    function handleCropMove(event) {
+        event.preventDefault();
+        const rect = elements.videoPlayer.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const width = rect.width;
+        const height = rect.height;
+
+        const cropBox = document.querySelector('.crop-box');
+        cropBox.style.left = `${x}px`;
+        cropBox.style.top = `${y}px`;
+        cropBox.style.width = `${width}px`;
+        cropBox.style.height = `${height}px`;
+    }
+
+    function cropVideo() {
+        const cropBox = document.querySelector('.crop-box');
+        const rect = cropBox.getBoundingClientRect();
+        const x = rect.left;
+        const y = rect.top;
+        const width = rect.width;
+        const height = rect.height;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(elements.videoPlayer, x, y, width, height, 0, 0, width, height);
+
+        const croppedBlob = canvas.toBlob(function(blob) {
+            elements.videoPlayer.src = URL.createObjectURL(blob);
+            elements.videoPlayer.controls = true;
+            elements.videoPlayer.muted = false;
+            document.body.removeChild(document.querySelector('#cropOverlay'));
+        }, 'image/jpeg', 0.9);
+    }
+
+    // Add crop state
+    let isDragging = false;
+    let isResizing = false;
+    let dragStart = { x: 0, y: 0 };
+    let resizeHandle = null;
+    let originalBox = { left: 0, top: 0, width: 0, height: 0 };
+
+    // Add crop button event listener
+    elements.cropButton.addEventListener('click', toggleCropMode);
+
+    function toggleCropMode() {
+        isCropMode = !isCropMode;
+        elements.cropButton.classList.toggle('active');
+        elements.cropButton.textContent = isCropMode ? 'Disable Crop' : 'Enable Crop';
+        elements.cropSettingsButton.style.display = isCropMode ? 'inline-block' : 'none';
+        
+        if (isCropMode) {
+            initializeCropOverlay();
+        } else {
+            removeCropOverlay();
+            if (cropSettingsVisible) {
+                document.querySelector('.crop-dimensions')?.remove();
+                cropSettingsVisible = false;
+            }
+        }
+    }
+
+    // Updated initializeCropOverlay function
+    function initializeCropOverlay() {
+        const videoRect = elements.videoPlayer.getBoundingClientRect();
+        elements.cropOverlay.style.display = 'block';
+        elements.cropOverlay.style.width = `${videoRect.width}px`;
+        elements.cropOverlay.style.height = `${videoRect.height}px`;
+
+        // Create initial crop box
+        cropBox = document.createElement('div');
+        cropBox.className = 'crop-box';
+
+        // Set initial size based on stored cropDimensions or default to full video size
+        let initialDimensions;
+        if (lastCropDimensions) {
+            initialDimensions = {
+                width: lastCropDimensions.width * videoRect.width,
+                height: lastCropDimensions.height * videoRect.height,
+                left: lastCropDimensions.x * videoRect.width,
+                top: lastCropDimensions.y * videoRect.height
+            };
+        } else {
+            initialDimensions = {
+                width: videoRect.width,
+                height: videoRect.height,
+                left: 0,
+                top: 0
+            };
+        }
+
+        cropBox.style.width = `${initialDimensions.width}px`;
+        cropBox.style.height = `${initialDimensions.height}px`;
+        cropBox.style.left = `${initialDimensions.left}px`;
+        cropBox.style.top = `${initialDimensions.top}px`;
+
+        const handles = ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se'];
+        handles.forEach(pos => {
+            const handle = document.createElement('div');
+            handle.className = `crop-handle ${pos}`;
+            cropBox.appendChild(handle);
+        });
+
+        elements.cropOverlay.appendChild(cropBox);
+
+        // Add event listeners
+        cropBox.addEventListener('mousedown', startDragging);
+        document.querySelectorAll('.crop-handle').forEach(handle => {
+            handle.addEventListener('mousedown', startResizing);
+        });
+    }
+
+    // Add new function to show crop settings
+    function showCropSettings() {
+        if (cropSettingsVisible) return;
+        
+        const dimensionsDisplay = document.createElement('div');
+        dimensionsDisplay.className = 'crop-dimensions';
+        dimensionsDisplay.innerHTML = `
+            <label>Width: <input type="number" id="cropWidth" min="1" step="1"></label>
+            <label>Height: <input type="number" id="cropHeight" min="1" step="1"></label>
+            <label>X: <input type="number" id="cropX" step="1"></label>
+            <label>Y: <input type="number" id="cropY" step="1"></label>
+            <button id="applyCropDimensions">Apply</button>
+        `;
+
+        document.body.appendChild(dimensionsDisplay);
+        cropSettingsVisible = true;
+
+        // Add event listeners
+        document.getElementById('applyCropDimensions').addEventListener('click', () => {
+            applyManualDimensions();
+            dimensionsDisplay.remove();
+            cropSettingsVisible = false;
+        });
+
+        // Update the display with current values
+        updateDimensionsDisplay();
+    }
+
+    // Add event listener for the crop settings button
+    // Add this in your initialization code or where other event listeners are set up
+    elements.cropSettingsButton.addEventListener('click', showCropSettings);
+
+    // Update the updateDimensionsDisplay function
+    function updateDimensionsDisplay() {
+        if (!cropBox || !cropSettingsVisible) return;
+        
+        const cropWidthInput = document.getElementById('cropWidth');
+        if (!cropWidthInput) return; // Exit if the dimensions overlay elements don't exist
+        
+        const videoRect = elements.videoPlayer.getBoundingClientRect();
+        const boxRect = cropBox.getBoundingClientRect();
+        
+        // Calculate actual dimensions based on video resolution
+        const actualVideoWidth = elements.videoPlayer.videoWidth;
+        const actualVideoHeight = elements.videoPlayer.videoHeight;
+        const scaleX = actualVideoWidth / videoRect.width;
+        const scaleY = actualVideoHeight / videoRect.height;
+        
+        // Convert displayed dimensions to actual video resolution dimensions
+        const actualWidth = Math.round(boxRect.width * scaleX);
+        const actualHeight = Math.round(boxRect.height * scaleY);
+        const actualX = Math.round((boxRect.left - videoRect.left) * scaleX);
+        const actualY = Math.round((boxRect.top - videoRect.top) * scaleY);
+        
+        cropWidthInput.value = actualWidth;
+        document.getElementById('cropHeight').value = actualHeight;
+        document.getElementById('cropX').value = actualX;
+        document.getElementById('cropY').value = actualY;
+    }
+
+    // Add new function to apply manual dimensions
+    function applyManualDimensions() {
+        const videoRect = elements.videoPlayer.getBoundingClientRect();
+        const actualVideoWidth = elements.videoPlayer.videoWidth;
+        const actualVideoHeight = elements.videoPlayer.videoHeight;
+        const scaleX = videoRect.width / actualVideoWidth;
+        const scaleY = videoRect.height / actualVideoHeight;
+        
+        // Get values in actual resolution
+        let newWidth = parseInt(document.getElementById('cropWidth').value);
+        let newHeight = parseInt(document.getElementById('cropHeight').value);
+        let newX = parseInt(document.getElementById('cropX').value);
+        let newY = parseInt(document.getElementById('cropY').value);
+        
+        // Convert actual resolution values to display values
+        newWidth = Math.round(newWidth * scaleX);
+        newHeight = Math.round(newHeight * scaleY);
+        newX = Math.round(newX * scaleX);
+        newY = Math.round(newY * scaleY);
+        
+        // Validate dimensions (in display coordinates)
+        newWidth = Math.min(Math.max(50, newWidth), videoRect.width);
+        newHeight = Math.min(Math.max(50, newHeight), videoRect.height);
+        newX = Math.min(Math.max(0, newX), videoRect.width - newWidth);
+        newY = Math.min(Math.max(0, newY), videoRect.height - newHeight);
+        
+        // Apply new dimensions
+        cropBox.style.width = `${newWidth}px`;
+        cropBox.style.height = `${newHeight}px`;
+        cropBox.style.left = `${newX}px`;
+        cropBox.style.top = `${newY}px`;
+        
+        // Update crop dimensions and display
+        updateCropDimensions();
+        updateDimensionsDisplay();
+    }
+
+    // Update existing functions to include dimensions display updates
+    function handleDragging(e) {
+        if (!isDragging) return;
+        
+        const videoRect = elements.videoPlayer.getBoundingClientRect();
+        const cropRect = cropBox.getBoundingClientRect();
+        const overlayRect = elements.cropOverlay.getBoundingClientRect();
+        
+        let newLeft = e.clientX - overlayRect.left - dragStart.x;
+        let newTop = e.clientY - overlayRect.top - dragStart.y;
+        
+        // Constrain to video boundaries
+        newLeft = Math.max(0, Math.min(newLeft, videoRect.width - cropRect.width));
+        newTop = Math.max(0, Math.min(newTop, videoRect.height - cropRect.height));
+        
+        cropBox.style.left = `${newLeft}px`;
+        cropBox.style.top = `${newTop}px`;
+        
+        if (cropSettingsVisible) {
+            updateDimensionsDisplay();
+        }
+    }
+
+    function handleResizing(e) {
+        if (!isResizing) return;
+        
+        const videoRect = elements.videoPlayer.getBoundingClientRect();
+        const overlayRect = elements.cropOverlay.getBoundingClientRect();
+        const deltaX = e.clientX - dragStart.x;
+        const deltaY = e.clientY - dragStart.y;
+        
+        let newBox = {
+            left: originalBox.left - overlayRect.left,
+            top: originalBox.top - overlayRect.top,
+            width: originalBox.width,
+            height: originalBox.height
+        };
+        
+        // Handle different resize directions
+        switch (resizeHandle) {
+            case 'nw':
+                newBox.left += deltaX;
+                newBox.top += deltaY;
+                newBox.width -= deltaX;
+                newBox.height -= deltaY;
+                break;
+            case 'n':
+                newBox.top += deltaY;
+                newBox.height -= deltaY;
+                break;
+            case 'ne':
+                newBox.width += deltaX;
+                newBox.top += deltaY;
+                newBox.height -= deltaY;
+                break;
+            case 'w':
+                newBox.left += deltaX;
+                newBox.width -= deltaX;
+                break;
+            case 'e':
+                newBox.width += deltaX;
+                break;
+            case 'sw':
+                newBox.left += deltaX;
+                newBox.width -= deltaX;
+                newBox.height += deltaY;
+                break;
+            case 's':
+                newBox.height += deltaY;
+                break;
+            case 'se':
+                newBox.width += deltaX;
+                newBox.height += deltaY;
+                break;
+        }
+        
+        // Apply minimum size constraint
+        if (newBox.width < 50) {
+            if (resizeHandle.includes('w')) {
+                newBox.left = newBox.left + newBox.width - 50;
+            }
+            newBox.width = 50;
+        }
+        if (newBox.height < 50) {
+            if (resizeHandle.includes('n')) {
+                newBox.top = newBox.top + newBox.height - 50;
+            }
+            newBox.height = 50;
+        }
+        
+        // Apply boundary constraints
+        if (newBox.left < 0) {
+            if (resizeHandle.includes('w')) {
+                newBox.width += newBox.left;
+            }
+            newBox.left = 0;
+        }
+        if (newBox.top < 0) {
+            if (resizeHandle.includes('n')) {
+                newBox.height += newBox.top;
+            }
+            newBox.top = 0;
+        }
+        if (newBox.left + newBox.width > videoRect.width) {
+            newBox.width = videoRect.width - newBox.left;
+        }
+        if (newBox.top + newBox.height > videoRect.height) {
+            newBox.height = videoRect.height - newBox.top;
+        }
+        
+        // Update crop box
+        cropBox.style.left = `${newBox.left}px`;
+        cropBox.style.top = `${newBox.top}px`;
+        cropBox.style.width = `${newBox.width}px`;
+        cropBox.style.height = `${newBox.height}px`;
+        
+        if (cropSettingsVisible) {
+            updateDimensionsDisplay();
+        }
+    }
+
+    function startDragging(e) {
+        if (e.target.classList.contains('crop-handle')) return;
+        
+        isDragging = true;
+        const rect = cropBox.getBoundingClientRect();
+        const overlayRect = elements.cropOverlay.getBoundingClientRect();
+        dragStart = {
+            x: e.clientX - overlayRect.left - (rect.left - overlayRect.left),
+            y: e.clientY - overlayRect.top - (rect.top - overlayRect.top)
+        };
+        e.preventDefault();
+    }
+
+    function startResizing(e) {
+        isResizing = true;
+        resizeHandle = e.target.className.split(' ')[1];
+        const rect = cropBox.getBoundingClientRect();
+        originalBox = {
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height
+        };
+        dragStart = {
+            x: e.clientX,
+            y: e.clientY
+        };
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
+    function stopDragging() {
+        isDragging = false;
+        updateCropDimensions();
+    }
+
+    function stopResizing() {
+        isResizing = false;
+        resizeHandle = null;
+        updateCropDimensions();
+    }
+
+    // Updated updateCropDimensions function with rounding to 4 decimals
+    function updateCropDimensions() {
+        const videoRect = elements.videoPlayer.getBoundingClientRect();
+        const boxRect = cropBox.getBoundingClientRect();
+        
+        cropDimensions = {
+            x: parseFloat((((boxRect.left - videoRect.left) / videoRect.width)).toFixed(4)),
+            y: parseFloat((((boxRect.top - videoRect.top) / videoRect.height)).toFixed(4)),
+            width: parseFloat(((boxRect.width / videoRect.width)).toFixed(4)),
+            height: parseFloat(((boxRect.height / videoRect.height)).toFixed(4))
+        };
+    }
+
+    function removeCropOverlay() {
+        // Store the current crop dimensions based on cropBox before removing
+        if (cropBox) {
+            const videoRect = elements.videoPlayer.getBoundingClientRect();
+            const boxRect = cropBox.getBoundingClientRect();
+            lastCropDimensions = {
+                x: parseFloat(((boxRect.left - videoRect.left) / videoRect.width).toFixed(4)),
+                y: parseFloat(((boxRect.top - videoRect.top) / videoRect.height).toFixed(4)),
+                width: parseFloat((boxRect.width / videoRect.width).toFixed(4)),
+                height: parseFloat((boxRect.height / videoRect.height).toFixed(4))
+            };
+        }
+        elements.cropOverlay.style.display = 'none';
+        elements.cropOverlay.innerHTML = '';
+        cropBox = null;
+        cropDimensions = null;
+    }
+
+    // Add event listeners for resize and drag
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) handleDragging(e);
+        if (isResizing) handleResizing(e);
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) stopDragging();
+        if (isResizing) stopResizing();
+    });
+
+    function getTagIndexFromKey(key) {
+        key = key.toUpperCase();
+        if (key >= '1' && key <= '9') {
+            return parseInt(key) - 1;
+        } else if (key === '0') {
+            return 9;
+        } else if (key >= 'A' && key <= 'Z') {
+            return 10 + (key.charCodeAt(0) - 'A'.charCodeAt(0));
+        } else {
+            return null;
+        }
+    }
+
+    function getShortcutDisplay(index) {
+        if (index < 9) return (index + 1).toString();
+        else if (index === 9) return '0';
+        else {
+            let code = 'A'.charCodeAt(0) + (index - 10);
+            if (code <= 'Z'.charCodeAt(0)) {
+                return String.fromCharCode(code);
+            } else {
+                return ''; // No shortcut available if out of range
+            }
+        }
+    }
+
+    // After Settings Modal event listeners, add Tag Manager Modal event listeners
+
+    let tagManagerMouseDownTarget = null;
+    elements.tagManagerModal.addEventListener('mousedown', (event) => {
+        tagManagerMouseDownTarget = event.target;
+    });
+
+    elements.tagManagerModal.addEventListener('mouseup', (event) => {
+        if (tagManagerMouseDownTarget === elements.tagManagerModal && event.target === elements.tagManagerModal) {
+            closeTagManager();
+        }
+    });
 
 })();
 
